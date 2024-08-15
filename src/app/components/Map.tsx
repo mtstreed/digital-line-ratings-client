@@ -18,7 +18,8 @@ interface MapProps {
 }
 
 
-const lineOptions = { color: 'yellow', weight: 1 }
+const visibleLineOptions = { color: 'yellow', weight: 1 }
+const clickableLineOptions = { color: 'transparent', weight: 10 }
 
 
 export default function Map({ centerCoords, zoom }: MapProps) {
@@ -71,11 +72,16 @@ export default function Map({ centerCoords, zoom }: MapProps) {
             
             {lines && lines.length > 0 && lines.map((line: Feature) => (
                 line.geometry.reversedPaths && ( // Check if reversedPaths is defined.
-                    <Polyline 
-                        key={line.attributes.OBJECTID}
-                        pathOptions={lineOptions}
-                        positions={line.geometry.reversedPaths[0] as LatLngTuple[]} 
-                    />
+                    <div key={line.attributes.OBJECTID}>
+                        <Polyline 
+                            pathOptions={visibleLineOptions}
+                            positions={line.geometry.reversedPaths[0] as LatLngTuple[]} 
+                        />
+                        <Polyline 
+                            pathOptions={clickableLineOptions}
+                            positions={line.geometry.reversedPaths[0] as LatLngTuple[]} 
+                        />
+                    </div>
                 )
             ))}
             <MapComponent onBoundsChange={handleBoundsChange}/>
