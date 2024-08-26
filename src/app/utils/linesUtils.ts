@@ -1,5 +1,6 @@
 import { LineData, Attributes, Feature, Geometry, Field } from '../types/lineApiTypes';
 import { LatLngBounds } from 'leaflet';
+import { DbResponse } from '../types/dbTypes';
 
 
 // Object to be input into buildUrlQuery().
@@ -143,4 +144,25 @@ export async function fetchAllLines(): Promise<LineData> {
 		}
 	}
 	return lineData;
+}
+
+// Use the backend server to fetch the line with dynamic rating.
+export async function fetchDbLineByObjectId(objectId_1: number): Promise<DbResponse[]> {
+	try {
+		const res: Response = await fetch(`../api/db/lines/${objectId_1}`, {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		});
+		if (!res.ok) {
+			const errorData = await res.json();
+			throw new Error(errorData.message || 'HTTP error from Route Handler.');
+		}
+		const resJson = await res.json();
+		return resJson;
+	} catch (error) {
+		console.log('utils/linesUtils | fetchDbLineByObjectId | error: ', error);
+		throw new Error(`utils/linesUtils | fetchDbLineByObjectId | error: ${error}`);
+	}
 }
