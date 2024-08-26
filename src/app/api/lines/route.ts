@@ -6,7 +6,7 @@ const baseUrl = process.env.TRANSMISSION_LINES_BASE_URL as string;
 // This GET request takes dynamic query params to allow for pagination, geographic bounds, etc.
 // TODO add functionality to use bounds if they are given (this would use the xmin, ymin, xmax, ymax query params)
 // I guess that would be another if statement, but not sure where.
-export async function GET(req: Request): Promise<Response> {
+export async function GET(req: Request) {
     
     // Get only the trailing query string from the url, and append it to the API baseUrl.
     const questionMarkIndex = req.url.indexOf('?');
