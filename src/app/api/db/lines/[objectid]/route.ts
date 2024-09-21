@@ -23,7 +23,6 @@ export async function GET(req: Request, { params }: { params: { objectid: String
         }
 
         const data = await res.json()
-        console.log('api/db/lines/route | GET | data: ', data);
         return Response.json(data)
     
     } catch (error) {

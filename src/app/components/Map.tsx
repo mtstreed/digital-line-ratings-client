@@ -87,6 +87,7 @@ export default function Map({ centerCoords, zoom }: MapProps) {
                                 eventHandlers={{
                                     add: async (e) => {
                                         const dynamicLineData: DbResponse[] = await fetchDbLineByObjectId(line.attributes.OBJECTID_1);
+                                        console.log(`components/Map.tsx | dynamicLineData: ${JSON.stringify(dynamicLineData)}`);
                                         setDbLineData(dynamicLineData[0]);
                                     }
                                 }}
