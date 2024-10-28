@@ -149,12 +149,14 @@ export async function fetchAllLines(): Promise<LineData> {
 // Use the backend server to fetch the line with dynamic rating.
 export async function fetchDbLineByObjectId(objectId_1: number): Promise<DbResponse[]> {
 	try {
+		console.log('utils/linesUtils.js | fetchDbLineByObjectId | objectId_1: ', objectId_1);
 		const res: Response = await fetch(`../api/db/lines/${objectId_1}`, {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
 			},
 		});
+		console.log('utils/linesUtils.js | fetchDbLineByObjectId | res: ', res);
 		if (!res.ok) {
 			const errorData = await res.json();
 			throw new Error(errorData.message || 'HTTP error from Route Handler.');
@@ -165,4 +167,24 @@ export async function fetchDbLineByObjectId(objectId_1: number): Promise<DbRespo
 		console.log('utils/linesUtils | fetchDbLineByObjectId | error: ', error);
 		throw new Error(`utils/linesUtils | fetchDbLineByObjectId | error: ${error}`);
 	}
+}
+
+export function calculateHourlySavings(staticVoltageKv: number, dynamicVoltageKv: number): number {
+
+	const staticWattageKw = (staticVoltageKv ** 2) / 25;
+	const dynamicWattageKw = (dynamicVoltageKv ** 2) / 25;
+	const wattageDifferenceMw =  (dynamicWattageKw - staticWattageKw)/1000;
+	const lineCapacityFactor = 0.5;
+	const valuePerMwh = 6;
+	const hourlySavings = wattageDifferenceMw * lineCapacityFactor * valuePerMwh;
+	return hourlySavings;
+}
+
+export function calculateYearlySavings(staticVoltageKv: number, dynamicVoltageKv: number): number {
+	const staticWattageKw = (staticVoltageKv ** 2) / 25;
+	const dynamicWattageKw = (dynamicVoltageKv ** 2) / 25;
+	const wattageDifferenceMw =  (dynamicWattageKw - staticWattageKw)/1000;
+	const valuePerMwPerYr = 150000;
+	const yearlySavings = wattageDifferenceMw * valuePerMwPerYr;
+	return yearlySavings;
 }
