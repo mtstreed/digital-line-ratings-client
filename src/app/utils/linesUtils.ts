@@ -175,7 +175,7 @@ export function calculateHourlySavings(staticVoltageKv: number, dynamicVoltageKv
 	const dynamicWattageKw = (dynamicVoltageKv ** 2) / 25;
 	const wattageDifferenceMw =  (dynamicWattageKw - staticWattageKw)/1000;
 	const lineCapacityFactor = 0.5;
-	const valuePerMwh = 6;
+	const valuePerMwh = 11;
 	const hourlySavings = wattageDifferenceMw * lineCapacityFactor * valuePerMwh;
 	return hourlySavings;
 }
