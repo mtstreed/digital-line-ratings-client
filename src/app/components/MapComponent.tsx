@@ -11,7 +11,7 @@ interface MapComponentProps {
     onBoundsChange: ( bounds:LatLngBounds | null) => void;
 }
 
-
+// Component to handle events on the react-leaflet Map.
 // Note: To use the useMap hook, this component must be a descendent of MapContainer (which it is).
 export default function MapComponent({ onBoundsChange }: MapComponentProps) {
  
