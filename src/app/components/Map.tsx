@@ -87,16 +87,15 @@ export default function Map({ centerCoords, zoom }: MapProps) {
                                 eventHandlers={{
                                     add: async (e) => {
                                         const dynamicLineData: DbResponse[] = await fetchDbLineByObjectId(line.attributes.OBJECTID_1);
-                                        console.log(`components/Map.tsx | dynamicLineData: ${JSON.stringify(dynamicLineData)}`);
                                         setDbLineData(dynamicLineData[0]);
                                     }
                                 }}
                             >
                                 <div>
                                     <div>Static Voltage: {line.attributes.VOLTAGE}</div>
-                                    <div>Dynamic Line Rating: {dbLineData?.fields?.dynamic_line_rating ?? 'Loading...'}</div>
-                                    <div>Savings per Hour: {dbLineData?.fields?.dynamic_line_rating ? calculateHourlySavings(line.attributes.VOLTAGE, dbLineData.fields.dynamic_line_rating) : 'Calculating...'}</div>
-                                    <div>Savings per Year: {dbLineData?.fields?.dynamic_line_rating ? calculateYearlySavings(line.attributes.VOLTAGE, dbLineData.fields.dynamic_line_rating) : 'Calculating...'}</div>
+                                    <div>Dynamic Line Rating: {dbLineData?.fields?.dynamic_line_rating?.toFixed(2) ?? 'Loading...'}</div>
+                                    <div>Savings per Hour: ${dbLineData?.fields?.dynamic_line_rating ? calculateHourlySavings(line.attributes.VOLTAGE, dbLineData.fields.dynamic_line_rating).toFixed(2) : 'Calculating...'}</div>
+                                    <div>Savings per Year: ${dbLineData?.fields?.dynamic_line_rating ? calculateYearlySavings(line.attributes.VOLTAGE, dbLineData.fields.dynamic_line_rating).toFixed(2) : 'Calculating...'}</div>
                                 </div>
                             </Popup>
                         </Polyline>
