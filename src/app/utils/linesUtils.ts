@@ -149,14 +149,12 @@ export async function fetchAllLines(): Promise<LineData> {
 // Use the backend server to fetch the line with dynamic rating.
 export async function fetchDbLineByObjectId(objectId_1: number): Promise<DbResponse[]> {
 	try {
-		console.log('utils/linesUtils.js | fetchDbLineByObjectId | objectId_1: ', objectId_1);
 		const res: Response = await fetch(`../api/db/lines/${objectId_1}`, {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
 			},
 		});
-		console.log('utils/linesUtils.js | fetchDbLineByObjectId | res: ', res);
 		if (!res.ok) {
 			const errorData = await res.json();
 			throw new Error(errorData.message || 'HTTP error from Route Handler.');
@@ -164,7 +162,6 @@ export async function fetchDbLineByObjectId(objectId_1: number): Promise<DbRespo
 		const resJson = await res.json();
 		return resJson;
 	} catch (error) {
-		console.log('utils/linesUtils | fetchDbLineByObjectId | error: ', error);
 		throw new Error(`utils/linesUtils | fetchDbLineByObjectId | error: ${error}`);
 	}
 }
