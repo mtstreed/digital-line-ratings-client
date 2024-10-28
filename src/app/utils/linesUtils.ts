@@ -166,16 +166,16 @@ export async function fetchDbLineByObjectId(objectId_1: number): Promise<DbRespo
 	}
 }
 
-export function calculateHourlySavings(staticVoltageKv: number, dynamicVoltageKv: number): number {
+// export function calculateHourlySavings(staticVoltageKv: number, dynamicVoltageKv: number): number {
 
-	const staticWattageKw = (staticVoltageKv ** 2) / 25;
-	const dynamicWattageKw = (dynamicVoltageKv ** 2) / 25;
-	const wattageDifferenceMw =  (dynamicWattageKw - staticWattageKw)/1000;
-	const lineCapacityFactor = 0.5;
-	const valuePerMwh = 11;
-	const hourlySavings = wattageDifferenceMw * lineCapacityFactor * valuePerMwh;
-	return hourlySavings;
-}
+// 	const staticWattageKw = (staticVoltageKv ** 2) / 25;
+// 	const dynamicWattageKw = (dynamicVoltageKv ** 2) / 25;
+// 	const wattageDifferenceMw =  (dynamicWattageKw - staticWattageKw)/1000;
+// 	const lineCapacityFactor = 0.5;
+// 	const valuePerMwh = 11;
+// 	const hourlySavings = wattageDifferenceMw * lineCapacityFactor * valuePerMwh;
+// 	return hourlySavings;
+// }
 
 export function calculateYearlySavings(staticVoltageKv: number, dynamicVoltageKv: number): number {
 	const staticWattageKw = (staticVoltageKv ** 2) / 25;
@@ -184,4 +184,14 @@ export function calculateYearlySavings(staticVoltageKv: number, dynamicVoltageKv
 	const valuePerMwPerYr = 150000;
 	const yearlySavings = wattageDifferenceMw * valuePerMwPerYr;
 	return yearlySavings;
+}
+
+export function calculateSavingsPerMwh(staticVoltageKv: number, dynamicVoltageKv: number): number {
+	const staticWattageKw = (staticVoltageKv ** 2) / 25;
+	const dynamicWattageKw = (dynamicVoltageKv ** 2) / 25;
+	const wattageDifferenceMw =  (dynamicWattageKw - staticWattageKw)/1000;
+	const lineCapacityFactor = 0.5;
+	const valuePerMwh = 16.5;
+	const savingsPerMwh = wattageDifferenceMw * lineCapacityFactor * valuePerMwh;
+	return savingsPerMwh;
 }
