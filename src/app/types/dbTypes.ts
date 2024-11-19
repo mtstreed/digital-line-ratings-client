@@ -26,4 +26,5 @@ export interface Fields {
     shape_length: number;
     dynamic_line_rating: number;
     path: string;  // LineString representation in WKT format
+    inferred_ampacity: number;
 }
