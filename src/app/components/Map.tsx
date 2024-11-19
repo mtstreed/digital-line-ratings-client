@@ -92,8 +92,8 @@ export default function Map({ centerCoords, zoom }: MapProps) {
                                 }}
                             >
                                 <div>
-                                    <div>Static Voltage: {line.attributes.VOLTAGE} kV</div>
-                                    <div>Dynamic Line Rating: {dbLineData?.fields?.dynamic_line_rating?.toFixed(2) ?? 'Loading...'} kV</div>
+                                    <div>Static Ampacity: {dbLineData?.fields?.inferred_ampacity} A</div>
+                                    <div>Dynamic Line Rating: {dbLineData?.fields?.dynamic_line_rating?.toFixed(2) ?? 'Loading...'} A</div>
                                     <div>Savings per MWh: ${dbLineData?.fields?.dynamic_line_rating ? calculateSavingsPerMwh(line.attributes.VOLTAGE, dbLineData.fields.dynamic_line_rating).toFixed(2) : 'Calculating...'}</div>
                                     <div>Savings per Year: ${dbLineData?.fields?.dynamic_line_rating ? calculateYearlySavings(line.attributes.VOLTAGE, dbLineData.fields.dynamic_line_rating).toFixed(2) : 'Calculating...'}</div>
                                 </div>
