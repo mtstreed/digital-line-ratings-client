@@ -7,6 +7,7 @@ import { DbResponse } from '../types/dbTypes';
 export interface UrlQueryParams {
 	resultOffset: number;
 	resultRecordCount: number;
+	overhead?: boolean;
 	xmin?: number;
 	ymin?: number;
 	xmax?: number;
@@ -47,7 +48,13 @@ function parseLineData(lineDataJson: string, prevLineData?: LineData): LineData 
 // TODO this should be more organized. Add url params more dynamically using a map/object of params.
 // Builds only the trailing query string for the lines/route.ts Route Handler.
 export function buildUrlQuery(params: UrlQueryParams): string {
-	let queryStr = `?where=1%3D1&outFields=*&outSR=4326&f=json&resultOffset=${params.resultOffset}&resultRecordCount=${params.resultRecordCount}`;
+	let queryStr = `?where=1%3D1`;
+
+	if (params.overhead) {
+		queryStr += `%20AND%20TYPE%20LIKE%20%27%25Overhead%25%27`;
+	}
+	
+	queryStr += `&outFields=*&outSR=4326&f=json&resultOffset=${params.resultOffset}&resultRecordCount=${params.resultRecordCount}`;
 
 	// Contrary to the docs, this complex url-encoded json seems to be the only way to input bounds.
 	if (params.xmin && params.ymin && params.xmax && params.ymax) {
@@ -63,6 +70,7 @@ export async function fetchLinesWithinBounds(bounds: LatLngBounds): Promise<Line
 	const ymin = bounds.getSouth();
 	const xmax = bounds.getEast();
 	const ymax = bounds.getNorth();
+	const overhead = true;
 	
 	const resultRecordCount = 1000;
 	let resultOffset = 0;
@@ -70,7 +78,7 @@ export async function fetchLinesWithinBounds(bounds: LatLngBounds): Promise<Line
 	let rowsReturned = 1000;
 
 	while (rowsReturned >= resultRecordCount) {
-		const urlQueryStr = buildUrlQuery({ resultOffset, resultRecordCount, xmin, ymin, xmax, ymax });
+		const urlQueryStr = buildUrlQuery({ resultOffset, resultRecordCount, overhead, xmin, ymin, xmax, ymax });
 		const reqUrl = `../api/lines${urlQueryStr}`;
 		
 		try {
