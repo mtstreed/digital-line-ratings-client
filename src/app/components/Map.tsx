@@ -8,7 +8,7 @@ import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 import "leaflet-defaulticon-compatibility";
 import MapComponent from "./MapComponent";
-import { fetchLinesWithinBounds, fetchDbLineByObjectId, calculateSavingsPerMwh, calculateYearlySavings } from "../utils/linesUtils";
+import { fetchLinesWithinBounds, fetchDbLineByObjectId } from "../utils/linesUtils";
 import { LineData, Feature } from '../types/lineApiTypes';
 import { DbResponse } from '../types/dbTypes';
 
@@ -94,8 +94,6 @@ export default function Map({ centerCoords, zoom }: MapProps) {
                                 <div>
                                     <div>Static Ampacity: {dbLineData?.fields?.inferred_ampacity} A</div>
                                     <div>Dynamic Line Rating: {dbLineData?.fields?.dynamic_line_rating?.toFixed(2) ?? 'Loading...'} A</div>
-                                    <div>Savings per MWh: ${dbLineData?.fields?.dynamic_line_rating ? calculateSavingsPerMwh(line.attributes.VOLTAGE, dbLineData.fields.dynamic_line_rating).toFixed(2) : 'Calculating...'}</div>
-                                    <div>Savings per Year: ${dbLineData?.fields?.dynamic_line_rating ? calculateYearlySavings(line.attributes.VOLTAGE, dbLineData.fields.dynamic_line_rating).toFixed(2) : 'Calculating...'}</div>
                                 </div>
                             </Popup>
                         </Polyline>
