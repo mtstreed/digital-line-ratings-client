@@ -64,7 +64,7 @@ export function buildUrlQuery(params: UrlQueryParams): string {
 }
 
 
-// TODO while loop pagination logic, and part of the parsin, is the same between both fetch functions. Should be extracted? But the url depends on the while loop vars (resultOffset)
+// TODO while loop pagination logic, and part of the parsing, is the same between both fetch functions. Should be extracted? But the url depends on the while loop vars (resultOffset)
 export async function fetchLinesWithinBounds(bounds: LatLngBounds): Promise<LineData> {
 	const xmin = bounds.getWest();
 	const ymin = bounds.getSouth();
