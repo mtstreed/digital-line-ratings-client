@@ -25,7 +25,7 @@ export async function GET(req: NextRequest, context: { params: Promise<{ objecti
         return NextResponse.json(data)
     
     } catch (error) {
-        console.error('api/lines/route | GET | Error fetching line data from django server: ', error);
-        throw new Error(`api/lines/route | GET | Error fetching line data from django server: ${error}`);
+        console.error('api/db/lines/[objectid]/route | GET | Error fetching line data from django server: ', error);
+        throw new Error(`api/db/lines/[objectid]/route | GET | Error fetching line data from django server: ${error}`);
     }
 }
