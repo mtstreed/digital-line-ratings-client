@@ -1,10 +1,8 @@
 import dotenv from 'dotenv';
 import { NextRequest, NextResponse } from 'next/server';
 
-
 dotenv.config();
 const baseUrl = process.env.DJANGO_SERVER_URL as string;
-
 
 export async function GET(req: NextRequest, context: { params: Promise<{ objectid: string }> }) {
     const { objectid } = await context.params;

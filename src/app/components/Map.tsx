@@ -1,5 +1,4 @@
-"use client"
-
+"use client";
 
 import { useEffect, useState, useRef } from "react";
 import { MapContainer, TileLayer, Polyline, Popup } from "react-leaflet";
@@ -12,16 +11,13 @@ import { fetchLinesWithinBounds, fetchDbLineByObjectId } from "../utils/linesUti
 import { LineData, Feature } from '../types/lineApiTypes';
 import { DbResponse } from '../types/dbTypes';
 
-
 interface MapProps {
     centerCoords: number[],
     zoom: number,
 }
 
-
 const visibleLineOptions = { color: 'yellow', weight: 1 }
 const clickableLineOptions = { color: 'transparent', weight: 10 }
-
 
 export default function Map({ centerCoords, zoom }: MapProps) {
 

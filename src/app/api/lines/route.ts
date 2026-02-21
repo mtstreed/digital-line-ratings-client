@@ -1,10 +1,8 @@
 import dotenv from 'dotenv';
 import { NextRequest, NextResponse } from 'next/server';
 
-
 dotenv.config();
 const baseUrl = process.env.TRANSMISSION_LINES_BASE_URL as string;
-
 
 // This GET request takes dynamic query params to allow for pagination, geographic bounds, etc.
 // TODO add functionality to use bounds if they are given (this would use the xmin, ymin, xmax, ymax query params)
