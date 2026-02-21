@@ -157,6 +157,7 @@ export async function fetchDbLineByObjectId(objectId_1: number): Promise<DbRespo
 				'Content-Type': 'application/json',
 			},
 		});
+
 		if (!res.ok) {
 			const errorData = await res.json();
 			throw new Error(errorData.message || 'HTTP error from Route Handler.');
