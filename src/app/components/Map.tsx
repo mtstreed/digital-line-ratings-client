@@ -88,8 +88,8 @@ export default function Map({ centerCoords, zoom }: MapProps) {
                                 }}
                             >
                                 <div>
-                                    <div>Static Ampacity: {dbLineData?.fields?.inferred_ampacity} A</div>
-                                    <div>Dynamic Line Rating: {dbLineData?.fields?.dynamic_line_rating?.toFixed(2) ?? 'Loading...'} A</div>
+                                    <div>Static Ampacity: {dbLineData?.fields?.inferred_ampacity ? `${dbLineData.fields.inferred_ampacity} Amps` : 'Loading...'}</div>
+                                    <div>Dynamic Line Rating: {dbLineData?.fields?.dynamic_line_rating ? `${dbLineData.fields.dynamic_line_rating.toFixed(2)} Amps` : 'Loading...'}</div>
                                 </div>
                             </Popup>
                         </Polyline>
