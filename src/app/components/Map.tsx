@@ -1,15 +1,15 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { MapContainer, TileLayer, Polyline, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, Polyline } from "react-leaflet";
 import { LatLngTuple, LatLngBounds, LatLng } from 'leaflet';
 import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 import "leaflet-defaulticon-compatibility";
 import MapComponent from "./MapComponent";
-import { fetchLinesWithinBounds, fetchDbLineByObjectId } from "../utils/linesUtils";
+import LinePopup from "./LinePopup";
+import { fetchLinesWithinBounds } from "../utils/linesUtils";
 import { LineData, Feature } from '../types/lineApiTypes';
-import { DbResponse } from '../types/dbTypes';
 
 interface MapProps {
     centerCoords: number[],
@@ -27,7 +27,6 @@ export default function Map({ centerCoords, zoom }: MapProps) {
     const [lines, setLines] = useState<Feature[]>([]);
     const [bounds, setBounds] = useState<LatLngBounds | null>(startingBounds);
     const fetchIdRef = useRef(0); // Used to prevent stale requests
-    const [dbLineData, setDbLineData] = useState<DbResponse>({} as DbResponse);
 
     const handleBoundsChange = (bounds: LatLngBounds | null) => {
         setBounds(bounds);
@@ -75,23 +74,11 @@ export default function Map({ centerCoords, zoom }: MapProps) {
                             pathOptions={visibleLineOptions}
                             positions={line.geometry.reversedPaths[0] as LatLngTuple[]} 
                         />
-                        <Polyline 
+                        <Polyline
                             pathOptions={clickableLineOptions}
                             positions={line.geometry.reversedPaths[0] as LatLngTuple[]}
                         >
-                            <Popup
-                                eventHandlers={{
-                                    add: async (e) => {
-                                        const dynamicLineData: DbResponse[] = await fetchDbLineByObjectId(line.attributes.OBJECTID_1);
-                                        setDbLineData(dynamicLineData[0]);
-                                    }
-                                }}
-                            >
-                                <div>
-                                    <div>Static Ampacity: {dbLineData?.fields?.inferred_ampacity ? `${dbLineData.fields.inferred_ampacity} Amps` : 'Loading...'}</div>
-                                    <div>Dynamic Line Rating: {dbLineData?.fields?.dynamic_line_rating ? `${dbLineData.fields.dynamic_line_rating.toFixed(2)} Amps` : 'Loading...'}</div>
-                                </div>
-                            </Popup>
+                            <LinePopup objectId={line.attributes.OBJECTID_1} />
                         </Polyline>
                     </div>
                 )
