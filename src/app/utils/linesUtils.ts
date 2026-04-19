@@ -26,20 +26,17 @@ function parseGeometry(geometry: Geometry): Geometry {
 }
 
 
-// If no existing LineData var is given, parse the json into LineData. If yes, add new LineData.features to the existing 
-// LineData.features. Should only be used on a json string response that fits LineData structure.
-function parseLineData(lineDataJson: string, prevLineData?: LineData): LineData {
-	const parsedJson: LineData = lineDataJson as unknown as LineData;
-
-	// Fix the geometry format for Leaflet
-	parsedJson.features.map((feature) => (
-		feature.geometry = parseGeometry(feature.geometry)
-	));
+// If no existing LineData var is given, parse the json into LineData. If yes, add new LineData.features to the existing
+// LineData.features.
+function parseLineData(lineDataJson: LineData, prevLineData?: LineData): LineData {
+	lineDataJson.features.forEach((feature) => {
+		feature.geometry = parseGeometry(feature.geometry);
+	});
 
 	if (!prevLineData) {
-		return parsedJson;
+		return lineDataJson;
 	} else {
-		prevLineData.features.push(...parsedJson.features);
+		prevLineData.features.push(...lineDataJson.features);
 		return prevLineData;
 	}
 }
@@ -83,49 +80,6 @@ export async function fetchLinesWithinBounds(bounds: LatLngBounds): Promise<Line
 		
 		try {
 			const res: Response = await fetch(reqUrl, {
-				method: 'GET',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-			});
-
-			if (!res.ok) {
-				const errorData = await res.json();
-				throw new Error(errorData.message || 'HTTP error from Route Handler.');
-			}
-			const resJson = await res.json();
-			rowsReturned = resJson.features.length;
-
-			if (!lineData.features) { // If lineData is empty, keep the entire response.
-				lineData = parseLineData(resJson);
-			} else { // If lineData already populated, just add the new features.
-				lineData = parseLineData(resJson, lineData);
-			}
-
-			resultOffset += resultRecordCount;
-		} catch (error) {
-			console.log('utils/linesUtils | fetchAllLines | error: ', error);
-			throw new Error(`utils/linesUtils | fetchAllLines | error: ${error}`);
-		}
-	}
-	return lineData;
-}
-
-
-// Fetch all transmission lines using pagination, 1000 at a time.
-export async function fetchAllLines(): Promise<LineData> {
-
-	const resultRecordCount = 1000;
-	let lineData: LineData = {} as LineData;
-	let resultOffset = 0;
-	let rowsReturned = 1000;
-
-	// If the number of rows returned is less than resultRecordCount, we have reached the end of the pagination.
-	while (rowsReturned >= resultRecordCount && resultOffset<10000) { // ***FOR TESTING TODO delete the resultOffset part
-
-		let urlQueryStr = buildUrlQuery({ resultOffset, resultRecordCount });
-		try {
-			const res: Response = await fetch(`../api/lines${urlQueryStr}`, {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
