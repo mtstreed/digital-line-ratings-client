@@ -63,7 +63,7 @@ export interface Field {
 	alias: string;
 	sqlType: string;
 	length?: number; // The maximum length of the field, typically used for string fields
-	domain: null | any;
-	defaultValue: null | any;
+	domain: unknown;
+	defaultValue: unknown;
 	description: string;
 }

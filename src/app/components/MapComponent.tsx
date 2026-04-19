@@ -1,4 +1,6 @@
-"use client";
+"use client"
+
+const ZOOM_BOUNDARY = 9;
 
 import { useRef } from "react";
 import { useMap, useMapEvents } from "react-leaflet";
@@ -13,9 +15,7 @@ interface MapComponentProps {
 // Note: To use the useMap hook, this component must be a descendent of MapContainer (which it is).
 export default function MapComponent({ onBoundsChange }: MapComponentProps) {
  
-    const oldZoomLevel = useRef<number | null>(null);
     const currentZoomLevel = useRef<number | null>(null);
-    const zoomBoundary = useRef<number>(9);
     const toastShown = useRef<boolean>(false);
     
     useMapEvents({
@@ -28,7 +28,7 @@ export default function MapComponent({ onBoundsChange }: MapComponentProps) {
         
         // On bounds change, if zoom level is greater than boundary, update bounds and set toastShown to false.
         // Else if zoom level is lower than boundary, nullify bounds and update old zoom level.
-        if (currentZoomLevel.current > zoomBoundary.current) {
+        if (currentZoomLevel.current > ZOOM_BOUNDARY) {
             const newBounds = map.getBounds();
             onBoundsChange(newBounds);
             toastShown.current = false;
@@ -39,7 +39,6 @@ export default function MapComponent({ onBoundsChange }: MapComponentProps) {
                 toastShown.current = true;
             }
         }
-        oldZoomLevel.current = currentZoomLevel.current;
     }
     return null;
 };
