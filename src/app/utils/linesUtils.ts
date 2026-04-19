@@ -2,7 +2,6 @@ import { LineData, Attributes, Feature, Geometry, Field } from '../types/lineApi
 import { LatLngBounds } from 'leaflet';
 import { DbResponse } from '../types/dbTypes';
 
-
 // Object to be input into buildUrlQuery().
 export interface UrlQueryParams {
 	resultOffset: number;
@@ -14,7 +13,6 @@ export interface UrlQueryParams {
 	ymax?: number;
 }
 
-
 // API returns coordinates in [long, lat] format, but Leaflet expects [lat, long]
 function parseGeometry(geometry: Geometry): Geometry {
 	const linePaths = geometry.paths;
@@ -24,7 +22,6 @@ function parseGeometry(geometry: Geometry): Geometry {
 	);
 	return { paths: linePaths, reversedPaths: reversedLinePaths };
 }
-
 
 // If no existing LineData var is given, parse the json into LineData. If yes, add new LineData.features to the existing 
 // LineData.features. Should only be used on a json string response that fits LineData structure.
@@ -44,7 +41,6 @@ function parseLineData(lineDataJson: string, prevLineData?: LineData): LineData 
 	}
 }
 
-
 // TODO this should be more organized. Add url params more dynamically using a map/object of params.
 // Builds only the trailing query string for the lines/route.ts Route Handler.
 export function buildUrlQuery(params: UrlQueryParams): string {
@@ -63,8 +59,7 @@ export function buildUrlQuery(params: UrlQueryParams): string {
 	return queryStr;
 }
 
-
-// TODO while loop pagination logic, and part of the parsin, is the same between both fetch functions. Should be extracted? But the url depends on the while loop vars (resultOffset)
+// TODO while loop pagination logic, and part of the parsing, is the same between both fetch functions. Should be extracted? But the url depends on the while loop vars (resultOffset)
 export async function fetchLinesWithinBounds(bounds: LatLngBounds): Promise<LineData> {
 	const xmin = bounds.getWest();
 	const ymin = bounds.getSouth();
@@ -110,7 +105,6 @@ export async function fetchLinesWithinBounds(bounds: LatLngBounds): Promise<Line
 	}
 	return lineData;
 }
-
 
 // Fetch all transmission lines using pagination, 1000 at a time.
 export async function fetchAllLines(): Promise<LineData> {
@@ -163,6 +157,7 @@ export async function fetchDbLineByObjectId(objectId_1: number): Promise<DbRespo
 				'Content-Type': 'application/json',
 			},
 		});
+
 		if (!res.ok) {
 			const errorData = await res.json();
 			throw new Error(errorData.message || 'HTTP error from Route Handler.');
