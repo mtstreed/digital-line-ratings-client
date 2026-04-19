@@ -2,7 +2,6 @@ import { LineData, Attributes, Feature, Geometry, Field } from '../types/lineApi
 import { LatLngBounds } from 'leaflet';
 import { DbResponse } from '../types/dbTypes';
 
-
 // Object to be input into buildUrlQuery().
 export interface UrlQueryParams {
 	resultOffset: number;
@@ -13,7 +12,6 @@ export interface UrlQueryParams {
 	xmax?: number;
 	ymax?: number;
 }
-
 
 // API returns coordinates in [long, lat] format, but Leaflet expects [lat, long]
 function parseGeometry(geometry: Geometry): Geometry {
@@ -41,7 +39,6 @@ function parseLineData(lineDataJson: LineData, prevLineData?: LineData): LineDat
 	}
 }
 
-
 // TODO this should be more organized. Add url params more dynamically using a map/object of params.
 // Builds only the trailing query string for the lines/route.ts Route Handler.
 export function buildUrlQuery(params: UrlQueryParams): string {
@@ -60,8 +57,7 @@ export function buildUrlQuery(params: UrlQueryParams): string {
 	return queryStr;
 }
 
-
-// TODO while loop pagination logic, and part of the parsin, is the same between both fetch functions. Should be extracted? But the url depends on the while loop vars (resultOffset)
+// TODO while loop pagination logic, and part of the parsing, is the same between both fetch functions. Should be extracted? But the url depends on the while loop vars (resultOffset)
 export async function fetchLinesWithinBounds(bounds: LatLngBounds): Promise<LineData> {
 	const xmin = bounds.getWest();
 	const ymin = bounds.getSouth();
@@ -76,7 +72,7 @@ export async function fetchLinesWithinBounds(bounds: LatLngBounds): Promise<Line
 
 	while (rowsReturned >= resultRecordCount) {
 		const urlQueryStr = buildUrlQuery({ resultOffset, resultRecordCount, overhead, xmin, ymin, xmax, ymax });
-		const reqUrl = `../api/lines${urlQueryStr}`;
+		const reqUrl = `/api/lines${urlQueryStr}`;
 		
 		try {
 			const res: Response = await fetch(reqUrl, {
@@ -111,12 +107,13 @@ export async function fetchLinesWithinBounds(bounds: LatLngBounds): Promise<Line
 // Use the backend server to fetch the line with dynamic rating.
 export async function fetchDbLineByObjectId(objectId_1: number): Promise<DbResponse[]> {
 	try {
-		const res: Response = await fetch(`../api/db/lines/${objectId_1}`, {
+		const res: Response = await fetch(`/api/db/lines/${objectId_1}`, {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
 			},
 		});
+
 		if (!res.ok) {
 			const errorData = await res.json();
 			throw new Error(errorData.message || 'HTTP error from Route Handler.');

@@ -7,7 +7,6 @@ import { useMap, useMapEvents } from "react-leaflet";
 import { LatLngBounds } from 'leaflet';
 import toast from "react-hot-toast";
 
-
 interface MapComponentProps {
     onBoundsChange: ( bounds:LatLngBounds | null) => void;
 }
