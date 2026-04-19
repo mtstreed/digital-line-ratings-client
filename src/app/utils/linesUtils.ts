@@ -79,7 +79,7 @@ export async function fetchLinesWithinBounds(bounds: LatLngBounds): Promise<Line
 
 	while (rowsReturned >= resultRecordCount) {
 		const urlQueryStr = buildUrlQuery({ resultOffset, resultRecordCount, overhead, xmin, ymin, xmax, ymax });
-		const reqUrl = `../api/lines${urlQueryStr}`;
+		const reqUrl = `/api/lines${urlQueryStr}`;
 		
 		try {
 			const res: Response = await fetch(reqUrl, {
@@ -125,7 +125,7 @@ export async function fetchAllLines(): Promise<LineData> {
 
 		let urlQueryStr = buildUrlQuery({ resultOffset, resultRecordCount });
 		try {
-			const res: Response = await fetch(`../api/lines${urlQueryStr}`, {
+			const res: Response = await fetch(`/api/lines${urlQueryStr}`, {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
@@ -157,7 +157,7 @@ export async function fetchAllLines(): Promise<LineData> {
 // Use the backend server to fetch the line with dynamic rating.
 export async function fetchDbLineByObjectId(objectId_1: number): Promise<DbResponse[]> {
 	try {
-		const res: Response = await fetch(`../api/db/lines/${objectId_1}`, {
+		const res: Response = await fetch(`/api/db/lines/${objectId_1}`, {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
