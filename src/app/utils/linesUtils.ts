@@ -1,4 +1,4 @@
-import { LineData, Attributes, Feature, Geometry, Field } from '../types/lineApiTypes';
+import { LineData, Geometry } from '../types/lineApiTypes';
 import { LatLngBounds } from 'leaflet';
 import { DbResponse } from '../types/dbTypes';
 
@@ -105,7 +105,7 @@ export async function fetchLinesWithinBounds(bounds: LatLngBounds): Promise<Line
 }
 
 // Use the backend server to fetch the line with dynamic rating.
-export async function fetchDbLineByObjectId(objectId_1: number): Promise<DbResponse[]> {
+export async function fetchDbLineByObjectId(objectId_1: number): Promise<DbResponse> {
 	try {
 		const res: Response = await fetch(`/api/db/lines/${objectId_1}`, {
 			method: 'GET',
