@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, Fragment } from "react";
 import { MapContainer, TileLayer, Polyline } from "react-leaflet";
 import { LatLngTuple, LatLngBounds, LatLng } from 'leaflet';
 import "leaflet/dist/leaflet.css";
@@ -12,7 +12,7 @@ import { fetchLinesWithinBounds } from "../utils/linesUtils";
 import { LineData, Feature } from '../types/lineApiTypes';
 
 interface MapProps {
-    centerCoords: number[],
+    centerCoords: [number, number],
     zoom: number,
 }
 
@@ -67,12 +67,12 @@ export default function Map({ centerCoords, zoom }: MapProps) {
                 opacity={0.8}
             />
             
-            {lines && lines.length > 0 && lines.map((line: Feature) => (
-                line.geometry.reversedPaths && ( // Check if reversedPaths is defined.
-                    <div key={line.attributes.OBJECTID}>
-                        <Polyline 
+            {lines.length > 0 && lines.map((line: Feature) => (
+                line.geometry.reversedPaths && (
+                    <Fragment key={line.attributes.OBJECTID}>
+                        <Polyline
                             pathOptions={visibleLineOptions}
-                            positions={line.geometry.reversedPaths[0] as LatLngTuple[]} 
+                            positions={line.geometry.reversedPaths[0] as LatLngTuple[]}
                         />
                         <Polyline
                             pathOptions={clickableLineOptions}
@@ -80,7 +80,7 @@ export default function Map({ centerCoords, zoom }: MapProps) {
                         >
                             <LinePopup objectId={line.attributes.OBJECTID_1} />
                         </Polyline>
-                    </div>
+                    </Fragment>
                 )
             ))}
             <MapComponent onBoundsChange={handleBoundsChange}/>
