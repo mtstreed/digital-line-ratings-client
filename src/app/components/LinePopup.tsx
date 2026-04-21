@@ -11,11 +11,11 @@ export default function LinePopup({ objectId }: { objectId: number }) {
     return (
         <Popup eventHandlers={{ add: async () => {
             const result = await fetchDbLineByObjectId(objectId);
-            setData(result[0]);
+            setData(result);
         }}}>
             <div>
-                <div>Static Ampacity: {data?.fields?.inferred_ampacity ? `${data.fields.inferred_ampacity} Amps` : 'Loading...'}</div>
-                <div>Dynamic Line Rating: {data?.fields?.dynamic_line_rating ? `${data.fields.dynamic_line_rating.toFixed(2)} Amps` : 'Loading...'}</div>
+                <div>Static Ampacity: {data?.inferred_ampacity ? `${data.inferred_ampacity} Amps` : 'Loading...'}</div>
+                <div>Dynamic Line Rating: {data?.dynamic_line_rating ? `${data.dynamic_line_rating.toFixed(2)} Amps` : 'Loading...'}</div>
             </div>
         </Popup>
     );
